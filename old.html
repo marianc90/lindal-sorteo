@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Viga&display=swap" rel="stylesheet">
+    <title>LINDAL - SORTEO FIN DE AÑO 2023</title>
+    <style>
+        body {
+            font-family: 'Viga', sans-serif;
+            text-align: center;
+            background: url("background.jpg") no-repeat center center fixed;
+            backdrop-filter: blur(4px);
+            color: white;
+            text-shadow: 1px 4px 5px rgba(0,0,0,0.67);
+            height: 100%;
+        }
+
+        #logo {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+        }
+
+        #ruleta {
+            margin-top: 20px;
+        }
+
+        #resultados {
+            margin-top: 20px;
+            font-size: 40px;
+            position: absolute;
+            top: 0;
+            right: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 20px;
+        }
+        .myButton {
+        box-shadow:inset 0px 34px 0px -15px #b54b3a;
+        background-color:#a73f2d;
+        border:1px solid #241d13;
+        display:inline-block;
+        cursor:pointer;
+        color:#ffffff;
+        font-family:Arial;
+        font-size:15px;
+        font-weight:bold;
+        padding:9px 23px;
+        text-decoration:none;
+        text-shadow:0px -1px 0px #7a2a1d;
+    }
+    .myButton:hover {
+        background-color:#b34332;
+    }
+    .myButton:active {
+        position:relative;
+        top:1px;
+    }
+
+
+    </style>
+</head>
+<body>
+    <br>
+    <img id="logo" src="Lindal-Logo.svg" alt="LINDAL Logo" width="250px">
+    <h1>SORTEO <br> Fin de año 2023</h1>
+
+    <button onclick="sortear()" class="myButton">SORTEAR</button> <br>
+    <canvas id="ruleta" width="250" height="250"></canvas>
+    <div id="resultados"></div>
+
+    <script>
+        const resultados = [];
+
+        function mostrarRuleta() {
+            const canvas = document.getElementById('ruleta');
+            const context = canvas.getContext('2d');
+            const numeros = Array.from({ length: 100 }, (_, index) => index + 1);
+
+            let count = 0;
+            const interval = setInterval(() => {
+                const numeroAleatorio = numeros[Math.floor(Math.random() * numeros.length)];
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.font = '70px Viga';
+                context.fillStyle = 'white';
+            
+                context.fillText(numeroAleatorio, 80, 120);
+
+                count++;
+                if (count >= 50) {
+                    clearInterval(interval);
+                    agregarNumeroAleatorio(numeroAleatorio);
+                }
+            }, 100);
+        }
+
+        function agregarNumeroAleatorio(numero) {
+            if (!resultados.includes(numero)) {
+                resultados.push(numero);
+                actualizarResultados();
+            } else {
+                // Si el número ya está en la lista, volvemos a mostrar la ruleta
+                mostrarRuleta();
+            }
+        }
+
+        function actualizarResultados() {
+            const resultadosDiv = document.getElementById('resultados');
+            resultadosDiv.innerHTML = '<h3>Resultados:</h3>';
+            resultados.forEach((numero, index) => {
+                resultadosDiv.innerHTML += `<p>${index + 1}. ${numero}</p>`;
+            });
+        }
+
+        function sortear() {
+            mostrarRuleta();
+        }
+    </script>
+
+</body>
+</html>
